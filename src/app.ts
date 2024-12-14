@@ -75,14 +75,13 @@ const User = new Schema({
 const UserModel = mongoose.model("User", User);
 //
 
-const uri = 'mongodb+srv://EbotProg:Jesus123@cluster0.sszjs9x.mongodb.net/giftMatcher'
+const uri =
+  "mongodb+srv://EbotProg:Jesus123@cluster0.sszjs9x.mongodb.net/giftMatcher";
 // const uriLocal = "mongodb://127.0.0.1:27017/giftMatcher"
 // database connect
 async function main() {
   try {
-    await mongoose.connect(
-      uri
-    );
+    await mongoose.connect(uri);
     console.log("database connection successfully");
     app.listen(port, () => {
       console.log(`server listening on port ${port}`);
@@ -93,8 +92,6 @@ async function main() {
 }
 // call a database
 main();
-
-
 
 app.get("/:number", async (req: Request, res: Response) => {
   try {
@@ -113,7 +110,8 @@ app.get("/:number", async (req: Request, res: Response) => {
     if (excludedUser?.receiverNumber) {
       res.json({
         status: "error",
-        message: "You have already chosen a color. You are not allowed to choose again",
+        message:
+          "You have already chosen a color. You are not allowed to choose again",
       });
       res.end();
     }
