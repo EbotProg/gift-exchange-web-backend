@@ -73,11 +73,13 @@ const User = new Schema({
 const UserModel = mongoose.model("User", User);
 //
 
+const uri = 'mongodb+srv://EbotProg:Jesus123@cluster0.sszjs9x.mongodb.net/giftMatcher'
 // database connect
 async function main() {
   try {
     await mongoose.connect(
-      "mongodb://127.0.0.1:27017/giftMatcher", // databaseNameHere
+      // "mongodb://127.0.0.1:27017/giftMatcher",
+      uri
     );
     console.log("database connection successfully");
     app.listen(port, () => {
