@@ -7,7 +7,7 @@
     "start-dev": "tsnd --respawn src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "format": "prettier --write --ignore-path .gitignore .",
-    "build": "tsc"
+    "build": "tsc --build"
   },
   "keywords": [],
   "author": "",
