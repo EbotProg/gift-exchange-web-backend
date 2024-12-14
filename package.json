@@ -1,0 +1,26 @@
+{
+  "name": "gift-matcher-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start-dev": "tsnd --respawn src/app.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write --ignore-path .gitignore ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.1",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^8.3.4",
+    "prettier": "^3.4.2",
+    "ts-node-dev": "^2.0.0"
+  }
+}
