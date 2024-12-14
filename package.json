@@ -6,7 +6,8 @@
   "scripts": {
     "start-dev": "tsnd --respawn src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write --ignore-path .gitignore ."
+    "format": "prettier --write --ignore-path .gitignore .",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
