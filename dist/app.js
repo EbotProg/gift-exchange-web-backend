@@ -72,11 +72,14 @@ const User = new Schema({
 // Compile model from schema
 const UserModel = mongoose_1.default.model("User", User);
 //
+const uri = 'mongodb+srv://EbotProg:Jesus123@cluster0.sszjs9x.mongodb.net/giftMatcher';
 // database connect
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield mongoose_1.default.connect("mongodb://127.0.0.1:27017/giftMatcher");
+            yield mongoose_1.default.connect(
+            // "mongodb://127.0.0.1:27017/giftMatcher",
+            uri);
             console.log("database connection successfully");
             app.listen(port, () => {
                 console.log(`server listening on port ${port}`);
