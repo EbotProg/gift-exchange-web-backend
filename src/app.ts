@@ -53,6 +53,7 @@ const port: number = 5000;
 const Schema = mongoose.Schema;
 
 const User = new Schema({
+  number: Number,
   email: {
     type: String,
     enum: ["achaleebotoma2002@gmail.com", "achaleebot9@gmail.com"],
@@ -66,6 +67,7 @@ const User = new Schema({
   color: String,
   receiverUsername: String,
   receiverEmail: String,
+  receiverNumber: Number,
   isFree: Boolean,
 });
 
@@ -74,11 +76,11 @@ const UserModel = mongoose.model("User", User);
 //
 
 const uri = 'mongodb+srv://EbotProg:Jesus123@cluster0.sszjs9x.mongodb.net/giftMatcher'
+// const uriLocal = "mongodb://127.0.0.1:27017/giftMatcher"
 // database connect
 async function main() {
   try {
     await mongoose.connect(
-      // "mongodb://127.0.0.1:27017/giftMatcher",
       uri
     );
     console.log("database connection successfully");
@@ -92,59 +94,26 @@ async function main() {
 // call a database
 main();
 
-app.post("/register", async (req: Request, res: Response) => {
+
+
+app.get("/:number", async (req: Request, res: Response) => {
   try {
-    console.log("params", req.body);
-    const { email, username } = req.body;
-    const color = generateRandomColor();
-    const user = new UserModel({ username, email, color });
-
-    await user.save();
-    res.json({
-      status: "success",
-      user,
-    });
-  } catch (err: any) {
-    console.log("register err: ", err);
-  } finally {
-    res.end();
-  }
-});
-
-app.post("/login", async (req: Request, res: Response) => {
-  try {
-    const { email, username } = req.body;
-    const user = await UserModel.findOne({ email, username });
-
-    res.json({
-      status: "success",
-      user,
-    });
-  } catch (err: any) {
-    console.log("login err: ", err);
-  } finally {
-    res.end();
-  }
-});
-
-app.get("/:email", async (req: Request, res: Response) => {
-  try {
-    const email = req.params.email;
-    console.log("email", email);
-    const excludedUser = await UserModel.findOne({ email });
+    const number = Number(req.params.number);
+    console.log("number", number);
+    const excludedUser = await UserModel.findOne({ number });
 
     if (!excludedUser) {
       res.json({
         status: "error",
-        message: "Your email is not among the requested emails",
+        message: "Your number is not among the given numbers",
       });
       res.end();
     }
 
-    if (excludedUser?.receiverEmail) {
+    if (excludedUser?.receiverNumber) {
       res.json({
         status: "error",
-        message: "You have already chosen a color. No round two for you",
+        message: "You have already chosen a color. You are not allowed to choose again",
       });
       res.end();
     }
@@ -165,11 +134,11 @@ app.get("/:email", async (req: Request, res: Response) => {
   }
 });
 
-app.get("/user/:email", async (req: Request, res: Response) => {
+app.get("/user/:number", async (req: Request, res: Response) => {
   try {
-    const email = req.params.email;
-    console.log("email", email);
-    const user = await UserModel.findOne({ email }, { _id: 1 });
+    const number = Number(req.params.number);
+    console.log("number", number);
+    const user = await UserModel.findOne({ number }, { _id: 1 });
     res.json({
       user,
     });
@@ -187,15 +156,15 @@ app.put("/:giverId/:receiverId", async (req: Request, res: Response) => {
     const receiver = await UserModel.findById(_id);
 
     if (!giver) {
-      res.status(400).json({
+      res.json({
         status: "error",
         message: "giver not found",
       });
       res.end();
     }
 
-    if (giver.receiverEmail) {
-      res.status(400).json({
+    if (giver.receiverNumber) {
+      res.json({
         status: "error",
         message: "user already has a receiver",
       });
@@ -203,7 +172,7 @@ app.put("/:giverId/:receiverId", async (req: Request, res: Response) => {
     }
 
     if (!receiver) {
-      res.status(400).json({
+      res.json({
         status: "error",
         message: "receiver not found",
       });
@@ -212,7 +181,7 @@ app.put("/:giverId/:receiverId", async (req: Request, res: Response) => {
 
     await UserModel.updateOne(
       { _id: giver._id },
-      { receiverEmail: receiver.email, receiverUsername: receiver.username },
+      { receiverNumber: receiver.number, receiverUsername: receiver.username },
     );
     await UserModel.updateOne({ _id: receiver._id }, { isFree: false });
 
